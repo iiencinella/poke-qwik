@@ -12,8 +12,8 @@ export default component$(() => {
 
       {/** TODO: Crear imagen */}
       <div class='mt2'>
-        <button class='btn btn-primary mr-2'>Anterior</button>
-        <button class='btn btn-primary'>Siguiente</button>
+        <button onClick$={ () => pokemonId.value-- } class='btn btn-primary mr-2'>Anterior</button>
+        <button onClick$={ () => pokemonId.value++ } class='btn btn-primary'>Siguiente</button>
       </div>
     </div>
   );
