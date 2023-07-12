@@ -6,14 +6,17 @@ export default component$(() => {
   // const pokemonId = useStore(); // Usarlo solo para valores compuestos
 
   return (
-    <div class='flex flex-col text-center'>
+    <div class='flex flex-col justify-center items-center'>
       <span class='text-2xl'>Buscador simple</span>
       <span class='text-9xl'>{pokemonId}</span>
 
-      {/** TODO: Crear imagen */}
+      <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId.value}.png`}
+        alt="Pokemon Sprite"
+        style={{ width: '200px' }} />
+
       <div class='mt2'>
-        <button onClick$={ () => pokemonId.value-- } class='btn btn-primary mr-2'>Anterior</button>
-        <button onClick$={ () => pokemonId.value++ } class='btn btn-primary'>Siguiente</button>
+        <button onClick$={() => pokemonId.value--} class='btn btn-primary mr-2'>Anterior</button>
+        <button onClick$={() => pokemonId.value++} class='btn btn-primary'>Siguiente</button>
       </div>
     </div>
   );
