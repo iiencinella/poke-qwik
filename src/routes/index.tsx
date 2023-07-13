@@ -6,6 +6,8 @@ export default component$(() => {
   const pokemonId = useSignal(1); // Usarlo solo para valores primitivos (boolean, string, number)
   // const pokemonId = useStore(); // Usarlo solo para valores compuestos
 
+  const showBackImage = useSignal(false);
+
   // Para poder manipular Signals, la función debe de estar serializada de la siguiente manera $([función])
   const changePokemonId = $((value:number) => {
     if(pokemonId.value + value <= 0) return; //Evaluamos que el valor del Signal no sea menor a 0
@@ -14,16 +16,21 @@ export default component$(() => {
     pokemonId.value += value;
   })
 
+  const changeShowBackImage = $(() => {
+    showBackImage.value = !showBackImage.value;
+  })
+
   return (
     <div class='flex flex-col justify-center items-center'>
       <span class='text-2xl'>Buscador simple</span>
       <span class='text-9xl'>{pokemonId}</span>
 
-      <PokemonImage id={pokemonId.value} backImage />
+      <PokemonImage id={pokemonId} backImage={showBackImage.value} />
 
       <div class='mt2'>
         <button onClick$={() => changePokemonId(-1)} class='btn btn-primary mr-2'>Anterior</button>
-        <button onClick$={() => changePokemonId(1)} class='btn btn-primary'>Siguiente</button>
+        <button onClick$={() => changePokemonId(1)} class='btn btn-primary mr-2'>Siguiente</button>
+        <button onClick$={() => changeShowBackImage()} class='btn btn-primary'>Voltear</button>
       </div>
     </div>
   );
