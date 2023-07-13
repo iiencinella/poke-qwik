@@ -19,7 +19,7 @@ export default component$(() => {
       <span class='text-2xl'>Buscador simple</span>
       <span class='text-9xl'>{pokemonId}</span>
 
-      <PokemonImage id={pokemonId.value} size={200} />
+      <PokemonImage id={pokemonId.value} backImage />
 
       <div class='mt2'>
         <button onClick$={() => changePokemonId(-1)} class='btn btn-primary mr-2'>Anterior</button>
