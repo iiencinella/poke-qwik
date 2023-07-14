@@ -20,7 +20,7 @@ export const PokemonImage = component$(({ id, size = 200, backImage = false }: P
     <div
       class='flex justify-center items-center'
       style={{ width: `${size}px`, height: `${size}px` }} >
-      <span>Cargando...</span>
+      {!imageLoaded.value && <span>Cargando...</span>}
       <img
         width={64}
         height={64}
