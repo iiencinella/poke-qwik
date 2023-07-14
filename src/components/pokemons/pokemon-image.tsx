@@ -4,9 +4,10 @@ interface Props {
   id: Signal<number>;
   size?: number;
   backImage: boolean;
+  isVisible?: boolean;
 }
 
-export const PokemonImage = component$(({ id, size = 200, backImage = false }: Props) => {
+export const PokemonImage = component$(({ id, size = 200, backImage = false, isVisible = true }: Props) => {
   const imageLoaded = useSignal(false);
 
   //Hook que se ejecutará cuando se cumpla una condición (que se puede evaluar por medio del hook "track")
@@ -29,7 +30,8 @@ export const PokemonImage = component$(({ id, size = 200, backImage = false }: P
         style={{ width: `${size}px` }}
         onLoad$={() => { imageLoaded.value = true; }}
         class={{ 
-          'hidden': !imageLoaded.value 
+          'hidden': !imageLoaded.value, 
+          'brightness-0': !isVisible
         }} />
     </div>
   )
