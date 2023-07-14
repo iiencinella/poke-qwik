@@ -27,11 +27,7 @@ export const PokemonImage = component$(({ id, size = 200, backImage = false }: P
         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${backImage ? '/back/' : ''}${id.value}.png`}
         alt="Pokemon Sprite"
         style={{ width: `${size}px` }}
-        onLoad$={() => { 
-          setTimeout(() => { 
-            imageLoaded.value = true;
-          }, 2000);
-        }}
+        onLoad$={() => { imageLoaded.value = true; }}
         class={{ 
           'hidden': !imageLoaded.value 
         }} />
