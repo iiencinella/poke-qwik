@@ -29,10 +29,10 @@ export const PokemonImage = component$(({ id, size = 200, backImage = false, isV
         alt="Pokemon Sprite"
         style={{ width: `${size}px` }}
         onLoad$={() => { imageLoaded.value = true; }}
-        class={{ 
+        class={[{ 
           'hidden': !imageLoaded.value, 
           'brightness-0': !isVisible
-        }} />
+        }, 'transition-all']} />
     </div>
   )
 })
