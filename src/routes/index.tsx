@@ -33,7 +33,7 @@ export default component$(() => {
       <span class='text-9xl'>{pokemonId}</span>
 
       <div onClick$={() => goToPokemon()}>
-        <PokemonImage id={pokemonId} backImage={showBackImage.value} isVisible={isPokemonVisible.value} />
+        <PokemonImage id={pokemonId.value} backImage={showBackImage.value} isVisible={isPokemonVisible.value} />
       </div>
 
       <div class='mt2'>

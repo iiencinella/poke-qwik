@@ -1,9 +1,9 @@
 import { type Signal, component$, useSignal, useTask$ } from "@builder.io/qwik";
 
 interface Props {
-  id: Signal<number>;
+  id: number | string;
   size?: number;
-  backImage: boolean;
+  backImage?: boolean;
   isVisible?: boolean;
 }
 
@@ -12,7 +12,7 @@ export const PokemonImage = component$(({ id, size = 200, backImage = false, isV
 
   //Hook que se ejecutará cuando se cumpla una condición (que se puede evaluar por medio del hook "track")
   useTask$(({ track }) => {
-    track(() => id.value);
+    track(() => id);
     //Para este caso: Si el valor de la variable "id" cambia, se ejecutará el siguiente bloque de código
     imageLoaded.value = false;
   });
@@ -25,7 +25,7 @@ export const PokemonImage = component$(({ id, size = 200, backImage = false, isV
       <img
         width={64}
         height={64}
-        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${backImage ? '/back/' : ''}${id.value}.png`}
+        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${backImage ? '/back/' : ''}${id}.png`}
         alt="Pokemon Sprite"
         style={{ width: `${size}px` }}
         onLoad$={() => { imageLoaded.value = true; }}
