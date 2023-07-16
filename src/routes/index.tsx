@@ -7,7 +7,7 @@ export default component$(() => {
   // const pokemonId = useStore(); // Usarlo solo para valores compuestos
 
   const showBackImage = useSignal(false);
-  const isPokemonVisible = useSignal(false);
+  const isPokemonVisible = useSignal(true);
 
   const nav = useNavigate();
 
