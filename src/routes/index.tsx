@@ -1,5 +1,5 @@
 import { $, component$, useSignal, useStore } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import { type DocumentHead, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImage } from "~/components/pokemons/pokemon-image";
 
 export default component$(() => {
@@ -8,6 +8,8 @@ export default component$(() => {
 
   const showBackImage = useSignal(false);
   const isPokemonVisible = useSignal(false);
+
+  const nav = useNavigate();
 
   // Para poder manipular Signals, la función debe de estar serializada de la siguiente manera $([función])
   const changePokemonId = $((value:number) => {
@@ -21,12 +23,18 @@ export default component$(() => {
     showBackImage.value = !showBackImage.value;
   })
 
+  const goToPokemon = $(() => {
+    nav(`/pokemon/${pokemonId.value}`);
+  })
+
   return (
     <div class='flex flex-col justify-center items-center'>
       <span class='text-2xl'>Buscador simple</span>
       <span class='text-9xl'>{pokemonId}</span>
 
-      <PokemonImage id={pokemonId} backImage={showBackImage.value} isVisible={isPokemonVisible.value} />
+      <div onClick$={() => goToPokemon()}>
+        <PokemonImage id={pokemonId} backImage={showBackImage.value} isVisible={isPokemonVisible.value} />
+      </div>
 
       <div class='mt2'>
         <button onClick$={() => changePokemonId(-1)} class='btn btn-primary mr-2'>Anterior</button>
