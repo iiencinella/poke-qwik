@@ -1,14 +1,17 @@
 import { component$ } from '@builder.io/qwik';
 import { Link, type DocumentHead, routeLoader$ } from '@builder.io/qwik-city';
+import type { BasicPokemonInfo, PokemonListResponse } from '~/interfaces';
 
-export const usePokemonList = routeLoader$(async() => {
-  const resp = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=10`);
-  const data = await resp.json();
+export const usePokemonList = routeLoader$<BasicPokemonInfo[]>(async () => {
+  const resp = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=0&offset=10`);
+  const data = await resp.json() as PokemonListResponse;
 
-  return data;
+  return data.results;
 })
 
 export default component$(() => {
+  const pokemons = usePokemonList();
+
   return (
     <div class='flex flex-col justify-center items-center'>
       <div class='flex justify-center items-center flex-col'>
@@ -23,17 +26,13 @@ export default component$(() => {
       </div>
 
       <div class="grid grid-cols-6 mt-5">
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
-        <div class="m-5 flex flex-col justify-center items-center">Pokemon</div>
+        {
+          pokemons.value.map(({ name }) => (
+            <div key={name} class="m-5 flex flex-col justify-center items-center">
+              <span class='capitalize'>{name}</span>
+            </div>
+          ))
+        }
       </div>
     </div>
   )
