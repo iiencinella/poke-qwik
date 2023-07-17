@@ -2,8 +2,13 @@ import { component$, useComputed$ } from '@builder.io/qwik';
 import { Link, type DocumentHead, routeLoader$, useLocation } from '@builder.io/qwik-city';
 import type { BasicPokemonInfo, PokemonListResponse } from '~/interfaces';
 
-export const usePokemonList = routeLoader$<BasicPokemonInfo[]>(async () => {
-  const resp = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=0&offset=10`);
+export const usePokemonList = routeLoader$<BasicPokemonInfo[]>(async ({ query, redirect, pathname }) => {
+  const offset = Number(query.get('offset') || '0');
+
+  if (isNaN(offset)) redirect(301, pathname);
+  if (offset < 0) redirect(301, pathname);
+
+  const resp = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`);
   const data = await resp.json() as PokemonListResponse;
 
   return data.results;
@@ -23,7 +28,7 @@ export default component$(() => {
       <div class='flex justify-center items-center flex-col'>
         <span class='my-5 text-5xl'>Status</span>
         <span>Offset: {currentOffset}</span>
-        <span>Está cargando página</span>
+        <span>Está cargando página: {location.isNavigating ? 'Si' : 'No'}</span>
       </div>
 
       <div class="mt-10">
