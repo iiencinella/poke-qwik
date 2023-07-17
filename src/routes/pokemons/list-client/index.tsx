@@ -18,7 +18,7 @@ export default component$(() => {
   // Este hook lo vamos a poder ejecutar cuando se cargue la vista en el cliente
   useTask$(async ({ track }) => {
     track(() => pokemonState.currentPage);
-    const pokemons = await getSmallPokemons(pokemonState.currentPage * 10);
+    const pokemons = await getSmallPokemons(pokemonState.currentPage * 10, 30);
 
     pokemonState.pokemons = pokemons;
   })
@@ -36,7 +36,7 @@ export default component$(() => {
         <button onClick$={() => pokemonState.currentPage++} class='btn btn-primary'>Siguiente</button>
       </div>
 
-      <div class="grid grid-cols-6 mt-5">
+      <div class="grid sm:grid-cols-2 md:grid-cols-5 xl:grid-cols-7 mt-5">
         {
           pokemonState.pokemons.map(({ name, id }) => (
             <div key={name} class="m-5 flex flex-col justify-center items-center">
