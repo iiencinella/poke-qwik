@@ -1,5 +1,7 @@
-import { component$, useStore } from '@builder.io/qwik';
+import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik';
 import { type DocumentHead } from '@builder.io/qwik-city';
+import { PokemonImage } from '~/components/pokemons/pokemon-image';
+import { getSmallPokemons } from '~/helpers/getSmallPokemons';
 import type { SmallPokemon } from '~/interfaces';
 
 interface PokemonPageState {
@@ -12,7 +14,15 @@ export default component$(() => {
     currentPage: 0,
     pokemons: []
   });
-  
+
+  // Este hook lo vamos a poder ejecutar cuando se cargue la vista en el cliente
+  useVisibleTask$(async ({ track }) => {
+    track(() => pokemonState.currentPage);
+    const pokemons = await getSmallPokemons(pokemonState.currentPage * 10);
+
+    pokemonState.pokemons = pokemons;
+  })
+
   return (
     <div class='flex flex-col justify-center items-center'>
       <div class='flex justify-center items-center flex-col'>
@@ -27,14 +37,14 @@ export default component$(() => {
       </div>
 
       <div class="grid grid-cols-6 mt-5">
-        {/* {
-          pokemons.value.map(({ name, id }) => (
+        {
+          pokemonState.pokemons.map(({ name, id }) => (
             <div key={name} class="m-5 flex flex-col justify-center items-center">
               <PokemonImage id={id} />
               <span class='capitalize'>{name}</span>
             </div>
           ))
-        } */}
+        }
       </div>
     </div>
   )
