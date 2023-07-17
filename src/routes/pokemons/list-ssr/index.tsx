@@ -1,17 +1,16 @@
 import { component$, useComputed$ } from '@builder.io/qwik';
 import { Link, type DocumentHead, routeLoader$, useLocation } from '@builder.io/qwik-city';
-import type { BasicPokemonInfo, PokemonListResponse } from '~/interfaces';
+import { PokemonImage } from '~/components/pokemons/pokemon-image';
+import { getSmallPokemons } from '~/helpers/getSmallPokemons';
+import type { BasicPokemonInfo, PokemonListResponse, SmallPokemon } from '~/interfaces';
 
-export const usePokemonList = routeLoader$<BasicPokemonInfo[]>(async ({ query, redirect, pathname }) => {
+export const usePokemonList = routeLoader$<SmallPokemon[]>(async ({ query, redirect, pathname }) => {
   const offset = Number(query.get('offset') || '0');
 
   if (isNaN(offset)) redirect(301, pathname);
   if (offset < 0) redirect(301, pathname);
 
-  const resp = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${offset}`);
-  const data = await resp.json() as PokemonListResponse;
-
-  return data.results;
+  return await getSmallPokemons(offset);
 })
 
 export default component$(() => {
@@ -38,8 +37,9 @@ export default component$(() => {
 
       <div class="grid grid-cols-6 mt-5">
         {
-          pokemons.value.map(({ name }) => (
+          pokemons.value.map(({ name, id }) => (
             <div key={name} class="m-5 flex flex-col justify-center items-center">
+              <PokemonImage id={id} />
               <span class='capitalize'>{name}</span>
             </div>
           ))
