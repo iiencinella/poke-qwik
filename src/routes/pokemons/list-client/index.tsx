@@ -1,4 +1,4 @@
-import { component$, useStore, useTask$ } from '@builder.io/qwik';
+import { $, component$, useOnDocument, useStore, useTask$ } from '@builder.io/qwik';
 import { type DocumentHead } from '@builder.io/qwik-city';
 import { PokemonImage } from '~/components/pokemons/pokemon-image';
 import { getSmallPokemons } from '~/helpers/getSmallPokemons';
@@ -6,22 +6,37 @@ import type { SmallPokemon } from '~/interfaces';
 
 interface PokemonPageState {
   currentPage: number;
+  isLoading: boolean; //Bandera para saber si se esta cargando datos. Para no ejecutar otras funciones
   pokemons: SmallPokemon[];
 }
 
 export default component$(() => {
   const pokemonState = useStore<PokemonPageState>({
     currentPage: 0,
+    isLoading: false,
     pokemons: []
   });
 
   // Este hook lo vamos a poder ejecutar cuando se cargue la vista en el cliente
   useTask$(async ({ track }) => {
     track(() => pokemonState.currentPage);
+
+    pokemonState.isLoading = true;
     const pokemons = await getSmallPokemons(pokemonState.currentPage * 10, 30);
 
-    pokemonState.pokemons = pokemons;
-  })
+    pokemonState.pokemons = [...pokemonState.pokemons, ...pokemons];
+    pokemonState.isLoading = false;
+  });
+
+  useOnDocument('scroll', $(() => {
+    const maxScroll = document.body.scrollHeight;
+    const currentScroll = window.screenY + window.innerHeight;
+
+    if((currentScroll + 200) >= maxScroll && !pokemonState.isLoading) {
+      pokemonState.isLoading = true;
+      pokemonState.currentPage++;
+    }
+  }));
 
   return (
     <div class='flex flex-col justify-center items-center'>
