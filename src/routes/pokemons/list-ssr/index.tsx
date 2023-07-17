@@ -1,5 +1,5 @@
-import { component$ } from '@builder.io/qwik';
-import { Link, type DocumentHead, routeLoader$ } from '@builder.io/qwik-city';
+import { component$, useComputed$ } from '@builder.io/qwik';
+import { Link, type DocumentHead, routeLoader$, useLocation } from '@builder.io/qwik-city';
 import type { BasicPokemonInfo, PokemonListResponse } from '~/interfaces';
 
 export const usePokemonList = routeLoader$<BasicPokemonInfo[]>(async () => {
@@ -11,18 +11,24 @@ export const usePokemonList = routeLoader$<BasicPokemonInfo[]>(async () => {
 
 export default component$(() => {
   const pokemons = usePokemonList();
+  const location = useLocation();
+
+  const currentOffset = useComputed$<number>(() => {
+    const offsetString = new URLSearchParams(location.url.search);
+    return Number(offsetString.get('offset') || 0);
+  })
 
   return (
     <div class='flex flex-col justify-center items-center'>
       <div class='flex justify-center items-center flex-col'>
         <span class='my-5 text-5xl'>Status</span>
-        <span>Página actual: xxx</span>
+        <span>Offset: {currentOffset}</span>
         <span>Está cargando página</span>
       </div>
 
       <div class="mt-10">
-        <Link class='btn btn-primary mr-2'>Anterior</Link>
-        <Link class='btn btn-primary'>Siguiente</Link>
+        <Link href={`/pokemons/list-ssr/?offset=${currentOffset.value - 10}`} class='btn btn-primary mr-2'>Anterior</Link>
+        <Link href={`/pokemons/list-ssr/?offset=${currentOffset.value + 10}`} class='btn btn-primary'>Siguiente</Link>
       </div>
 
       <div class="grid grid-cols-6 mt-5">
