@@ -12,21 +12,21 @@ export const usePokemonGame = () => {
     pokemonGame.pokemonId += value;
   });
 
-  const toogleFromBack = $(() => {
+  const toggleFromBack = $(() => {
     pokemonGame.showBackImage = !pokemonGame.showBackImage
   });
 
-  const toogleVisible = $(() => {
+  const toggleVisible = $(() => {
     pokemonGame.isPokemonVisible = !pokemonGame.isPokemonVisible
   });
 
   return {
     pokemonId: useComputed$(() => pokemonGame.pokemonId),
     showBackImage: useComputed$(() => pokemonGame.showBackImage),
-    isPoikemonVisible: useComputed$(() => pokemonGame.isPokemonVisible),
-    nextPokemon: () => changePokemonId(1),
-    previewPokemon: () => changePokemonId(-1),
-    toogleFromBack,
-    toogleVisible
+    isPokemonVisible: useComputed$(() => pokemonGame.isPokemonVisible),
+    nextPokemon: $(() => changePokemonId(1)),
+    previewPokemon: $(() => changePokemonId(-1)),
+    toggleFromBack,
+    toggleVisible
   }
 }
