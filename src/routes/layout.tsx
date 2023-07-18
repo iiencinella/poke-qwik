@@ -2,10 +2,7 @@ import { component$, Slot, useStyles$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 
-import Nabvar from "~/components/shared/navbar/nabvar";
-
 import styles from "./styles.css?inline";
-import { PokemonProvider } from "~/context";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -28,11 +25,6 @@ export default component$(() => {
   useStyles$(styles);
 
   return (
-    <PokemonProvider>
-      <Nabvar />
-      <main>
-        <Slot />
-      </main>
-    </PokemonProvider>
+    <Slot />
   );
 });
