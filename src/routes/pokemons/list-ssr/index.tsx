@@ -47,7 +47,13 @@ export default component$(() => {
         }
       </div>
       <Modal>
-        <span>Hola Mundo</span>
+        <div q: slot='title'>
+          Nombre del pokemon
+        </div>
+        <div q: slot='content'>
+          <PokemonImage id={1} />
+          <span>Preguntando a ChatGPT</span>
+        </div>
       </Modal>
     </div>
   )
