@@ -1,8 +1,9 @@
 import { component$, useComputed$ } from '@builder.io/qwik';
 import { Link, type DocumentHead, routeLoader$, useLocation } from '@builder.io/qwik-city';
 import { PokemonImage } from '~/components/pokemons/pokemon-image';
+import { Modal } from '~/components/shared';
 import { getSmallPokemons } from '~/helpers/getSmallPokemons';
-import type { BasicPokemonInfo, PokemonListResponse, SmallPokemon } from '~/interfaces';
+import type { SmallPokemon } from '~/interfaces';
 
 export const usePokemonList = routeLoader$<SmallPokemon[]>(async ({ query, redirect, pathname }) => {
   const offset = Number(query.get('offset') || '0');
@@ -45,6 +46,9 @@ export default component$(() => {
           ))
         }
       </div>
+      <Modal>
+        <span>Hola Mundo</span>
+      </Modal>
     </div>
   )
 });
