@@ -2,6 +2,7 @@ import { component$, useContext } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { PokemonImage } from '~/components/pokemons/pokemon-image';
 import { PokemonGameContext } from '~/context';
+import { usePokemonGame } from '~/hooks';
 
 //Este hook lo vamos a poder usar para realizar validaciones antes de que se cargue la pantalla
 export const usePokemonId = routeLoader$<number>(({ params, redirect}) => {
@@ -19,13 +20,18 @@ export const usePokemonId = routeLoader$<number>(({ params, redirect}) => {
 export default component$(() => {
   const pokemonId = usePokemonId();
 
-  const pokemonGame = useContext(PokemonGameContext);
+  const { toggleFromBack, toggleVisible, isPokemonVisible, showBackImage } = usePokemonGame();
 
   return (
     <div class='flex justify-center items-center flex-col'>
       <span class='text-5xl'>Pokemon: {pokemonId}</span>
 
-      <PokemonImage id={pokemonId.value} backImage={pokemonGame.showBackImage} isVisible={pokemonGame.isPokemonVisible} />
+      <PokemonImage id={pokemonId.value} backImage={showBackImage.value} isVisible={isPokemonVisible.value} />
+
+      <div class='mt2'>
+        <button onClick$={toggleFromBack} class='btn btn-primary mr-2'>Voltear</button>
+        <button onClick$={toggleVisible} class='btn btn-primary'>Revelar</button>
+      </div>
     </div>
   )
 });
