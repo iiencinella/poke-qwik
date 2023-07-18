@@ -1,6 +1,6 @@
 
 import { component$, useStylesScoped$ } from '@builder.io/qwik';
-import { Form, routeAction$ } from '@builder.io/qwik-city';
+import { Form, routeAction$, zod$, z } from '@builder.io/qwik-city';
 
 import styles from './login.css?inline';
 
@@ -16,7 +16,10 @@ export const useLoginUserAction = routeAction$((data, {cookie, redirect}) => {
   return {
     success: false
   }
-});
+}, zod$({
+  email: z.string().email('Formato de correo inválido'),
+  password: z.string().min(6, 'Mínimo 6 letras')
+}));
 
 export default component$(() => {
   useStylesScoped$(styles);
@@ -42,6 +45,10 @@ export default component$(() => {
       <div class="relative">
         <button type='submit'>Ingresar</button>
       </div>
+
+      <code>
+        {JSON.stringify(action.value, undefined, 2)}
+      </code>
     </Form>
   )
 });
