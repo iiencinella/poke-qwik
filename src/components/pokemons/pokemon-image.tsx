@@ -1,4 +1,4 @@
-import { type Signal, component$, useSignal, useTask$, useComputed$ } from "@builder.io/qwik";
+import { component$, useSignal, useTask$, useComputed$ } from "@builder.io/qwik";
 
 interface Props {
   id: number | string;
