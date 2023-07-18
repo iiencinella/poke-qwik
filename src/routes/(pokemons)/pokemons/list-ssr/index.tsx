@@ -63,7 +63,7 @@ export default component$(() => {
         }
       </div>
 
-      <Modal showModal={modalVisible.value} closeFn={CloseModal}>
+      <Modal showModal={modalVisible.value} closeFn={CloseModal} size='md'>
         <div q: slot='title'>
           {modalPokemon.name}
         </div>
