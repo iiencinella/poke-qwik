@@ -5,7 +5,7 @@ import type { RequestHandler } from "@builder.io/qwik-city";
 import Nabvar from "~/components/shared/navbar/nabvar";
 
 import styles from "./styles.css?inline";
-import { PokemonGameContext, PokemonGameState } from "~/context";
+import { PokemonGameContext, PokemonGameState, PokemonListContext, PokemonListState } from "~/context";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -34,6 +34,14 @@ export default component$(() => {
   });
 
   useContextProvider(PokemonGameContext, pokemonGame);
+
+  const pokemonList = useStore<PokemonListState>({
+    currentPage: 0,
+    isLoading: false,
+    pokemons: []
+  });
+
+  useContextProvider(PokemonListContext, pokemonList);
 
   return (
     <>

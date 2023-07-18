@@ -1,21 +1,11 @@
-import { $, component$, useOnDocument, useStore, useTask$ } from '@builder.io/qwik';
+import { $, component$, useContext, useOnDocument, useTask$ } from '@builder.io/qwik';
 import { type DocumentHead } from '@builder.io/qwik-city';
 import { PokemonImage } from '~/components/pokemons/pokemon-image';
+import { PokemonListContext } from '~/context';
 import { getSmallPokemons } from '~/helpers/getSmallPokemons';
-import type { SmallPokemon } from '~/interfaces';
-
-interface PokemonPageState {
-  currentPage: number;
-  isLoading: boolean; //Bandera para saber si se esta cargando datos. Para no ejecutar otras funciones
-  pokemons: SmallPokemon[];
-}
 
 export default component$(() => {
-  const pokemonState = useStore<PokemonPageState>({
-    currentPage: 0,
-    isLoading: false,
-    pokemons: []
-  });
+  const pokemonState = useContext(PokemonListContext);
 
   // Este hook lo vamos a poder ejecutar cuando se cargue la vista en el cliente
   useTask$(async ({ track }) => {
