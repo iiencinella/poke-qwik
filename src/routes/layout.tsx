@@ -1,10 +1,11 @@
-import { component$, Slot, useStyles$ } from "@builder.io/qwik";
+import { component$, Slot, useContextProvider, useStore, useStyles$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 
 import Nabvar from "~/components/shared/navbar/nabvar";
 
 import styles from "./styles.css?inline";
+import { PokemonGameContext, PokemonGameState } from "~/context";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -25,6 +26,15 @@ export const useServerTimeLoader = routeLoader$(() => {
 
 export default component$(() => {
   useStyles$(styles);
+
+  const pokemonGame = useStore<PokemonGameState>({
+    pokemonId: 1,
+    isPokemonVisible: true,
+    showBackImage: false
+  });
+
+  useContextProvider(PokemonGameContext, pokemonGame);
+
   return (
     <>
       <Nabvar />
